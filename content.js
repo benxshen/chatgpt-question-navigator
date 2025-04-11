@@ -18,7 +18,7 @@ function createDropdown(questions) {
   dropdown.style.overflowY = 'auto';
 
   const defaultOption = document.createElement('option');
-  defaultOption.innerText = '選擇一個提問來跳轉 🎙️';
+  defaultOption.innerText = '⚡ 選擇一個提問來跳轉 ⚡';
   defaultOption.disabled = true;
   defaultOption.selected = true;
   dropdown.appendChild(defaultOption);
@@ -37,6 +37,7 @@ function createDropdown(questions) {
     const target = document.getElementById(dropdown.value);
     if (target) {
       target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => dropdown.selectedIndex = 0, 1000);
     }
   });
 
