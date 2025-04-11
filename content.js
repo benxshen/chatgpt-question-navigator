@@ -6,6 +6,16 @@ function getAllQuestions() {
   }));
 }
 
+function addQuestionOption(question, dropdown) {
+  const option = document.createElement('option');
+  option.value = question.id;
+  option.innerText = `${dropdown.options.length}. `;
+  option.innerText += question.text.length > 80 ? question.text.slice(0, 80) + '...' : question.text;
+  dropdown.appendChild(option);
+  
+  question.element.setAttribute('id', question.id);
+}
+
 function createDropdown(questions) {
   const dropdown = document.createElement('select');
   dropdown.style.position  = 'fixed';
@@ -23,15 +33,7 @@ function createDropdown(questions) {
   defaultOption.selected = true;
   dropdown.appendChild(defaultOption);
 
-  questions.forEach((q, i) => {
-    const option = document.createElement('option');
-    option.value = q.id;
-    option.innerText = `${i + 1}. `;
-    option.innerText += q.text.length > 80 ? q.text.slice(0, 80) + '...' : q.text;
-    dropdown.appendChild(option);
-
-    q.element.setAttribute('id', q.id);
-  });
+  questions.forEach(q => addQuestionOption(q, dropdown));
 
   dropdown.addEventListener('change', () => {
     const target = document.getElementById(dropdown.value);
@@ -39,6 +41,19 @@ function createDropdown(questions) {
       target.scrollIntoView({ behavior: 'smooth', block: 'center' });
       setTimeout(() => dropdown.selectedIndex = 0, 1000);
     }
+  });
+
+  dropdown.addEventListener('mousedown', (event) => {
+    
+    // 重新獲取問題列表
+    const questions = getAllQuestions();
+
+    if (questions.length > dropdown.options.length - 1) {
+      for (let i = dropdown.options.length-1; i < questions.length; i++) {
+        addQuestionOption(questions[i], dropdown);
+      }
+    }
+
   });
 
   document.body.appendChild(dropdown);
