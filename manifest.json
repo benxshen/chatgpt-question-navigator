@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "ChatGPT Question Navigator",
+  "version": "1.0",
+  "description": "在 ChatGPT 頁面中快速跳轉到你提問過的問題",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://chatgpt.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "style.css"
+      ]
+    }
+  ],
+  "action": {
+    "default_title": "ChatGPT Navigator"
+  }
+}
