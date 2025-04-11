@@ -78,7 +78,7 @@ function initializeOrUpdateDropdown() {
 }
 
 // 初始化
-initializeOrUpdateDropdown();
+setTimeout(initializeOrUpdateDropdown, 1000);
 
 // 使用 MutationObserver 監聽 URL 變化
 const observer = new MutationObserver(() => {
