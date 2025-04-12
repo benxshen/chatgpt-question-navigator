@@ -59,6 +59,11 @@ function addQuestionItem(question, container) {
   const item = document.createElement('div');
   item.className = 'question-item';
   item.dataset.questionId = question.id;
+
+  const minimapRow = document.createElement('div');
+  minimapRow.className = 'minimap-row';
+  minimapRow.dataset.questionId = question.id;
+  document.querySelector('.navigator-minimap').appendChild(minimapRow);
   
   // 主要文字
   const text = question.text.length > 80 ? question.text.slice(0, 80) + '...' : question.text;
@@ -84,10 +89,10 @@ function addQuestionItem(question, container) {
 }
 
 function createNavigator(questions) {
-  // 創建固定tab
-  const tab = document.createElement('div');
-  tab.className = 'navigator-tab';
-  document.body.appendChild(tab);
+  // 創建固定minimap
+  const minimap = document.createElement('div');
+  minimap.className = 'navigator-minimap';
+  document.body.appendChild(minimap);
 
   // 創建導航器
   const navigator = document.createElement('div');
@@ -101,14 +106,14 @@ function createNavigator(questions) {
 
   questions.forEach(q => addQuestionItem(q, navigator));
 
-  // 點擊 tab 顯示/隱藏導航器
-  tab.addEventListener('click', () => {
+  // 點擊 minimap 顯示/隱藏導航器
+  minimap.addEventListener('click', () => {
     navigator.classList.toggle('show');
   });
 
   // 點擊其他地方隱藏導航器
   document.addEventListener('click', (e) => {
-    if (!navigator.contains(e.target) && !tab.contains(e.target)) {
+    if (!navigator.contains(e.target) && !minimap.contains(e.target)) {
       navigator.classList.remove('show');
     }
   });
@@ -141,6 +146,16 @@ function createNavigator(questions) {
 
       if (closestItem) {
         closestItem.classList.add('active');
+
+        const minimapRows = document.querySelectorAll('.minimap-row');
+        minimapRows.forEach(item => {
+          if (item.dataset.questionId === closestItem.dataset.questionId) {
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active')
+          }
+        });
+
       }
     });
   }, { passive: true });
@@ -156,12 +171,15 @@ let currentNavigator = null;
 function initializeOrUpdateNavigator() {
   if (currentNavigator) {
     currentNavigator.remove();
+    document.querySelector('.navigator-minimap').remove();
+    currentNavigator = null;
   }
   
   setTimeout(() => {
     const questions = getAllQuestions();
     if (questions.length > 0) {
       currentNavigator = createNavigator(questions);
+      currentNavigator.querySelector('.question-item:last-child').click();
     }
   }, 2000);
 }

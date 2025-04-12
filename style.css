@@ -23,31 +23,30 @@
 }
 
 /* 固定在右側的小標籤 */
-.navigator-tab {
+.navigator-minimap {
   position: fixed;
   top: 80px;
   right: 20px;
   width: 32px;
-  height: 32px;
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
   cursor: pointer;
-  display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10000;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  z-index: 1;
 }
 
-.navigator-tab::before {
-  content: '📑';
-  font-size: 18px;
+.minimap-row {
+  margin-top: 10px;
+  background-color: gray;
+  height: 2px;
+  width: 20px;
+  border-radius: 2px;
+  opacity: 0.7;
 }
 
-.navigator-tab:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.minimap-row.active {
+  background-color: #3182CE;
+  opacity: 1;
+  height: 4px;
 }
 
 .question-item {
@@ -68,6 +67,7 @@
 }
 
 .question-item:first-child {
+  text-align: center;
   color: #666;
   font-style: italic;
   pointer-events: none;
