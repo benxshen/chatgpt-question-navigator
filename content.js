@@ -287,3 +287,161 @@ contentObserver.observe(document.body, {
 
 // 初始化主題欄
 setTimeout(() => createTopicBar(), 1000);
+
+//////////////////////////////////////////////////////////////////////////////
+
+/* 加上自訂樣式 class 到正確的 active chat item */
+function markActiveChat() {
+
+  /* 移除舊的 active 樣式 */
+  document.querySelectorAll('nav a.my-active-chat')
+    .forEach(el => el.classList.remove('my-active-chat'));
+
+  /* 重新比對目前 URL */
+  const activeChat = [...document.querySelectorAll('nav a')].find(el => {
+    const href = el.getAttribute('href');
+    return href && href !== '/' && window.location.href === `https://chatgpt.com${href}`;
+  });
+
+  if(activeChat) {
+    activeChat.classList.add('my-active-chat');
+  }
+}
+
+function throttle(func, limit) {
+  let lastCall = 0;
+  let timeout;
+  return function(...args) {
+    const now = Date.now();
+    const remaining = limit - (now - lastCall);
+    if(remaining <= 0) {
+      clearTimeout(timeout);
+      lastCall = now;
+      func.apply(this, args);
+    } else {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        lastCall = Date.now();
+        func.apply(this, args);
+      }, remaining);
+    }
+  };
+}
+
+
+
+/* 🔁 監聽路由變化（支援 ChatGPT 是 SPA） */
+function hookUrlChange(callback) {
+  const pushState = history.pushState;
+  const replaceState = history.replaceState;
+
+  history.pushState = function() {
+    pushState.apply(history, arguments);
+    callback();
+  };
+
+  history.replaceState = function() {
+    replaceState.apply(history, arguments);
+    callback();
+  };
+
+  window.addEventListener('popstate', callback);
+}
+
+const throttledMarkActiveChat = throttle(markActiveChat, 500);
+
+/* 🧠 每次網址變動就重新套用 */
+hookUrlChange(() => {
+  setTimeout(throttledMarkActiveChat, 200); /* 等待 DOM 變化完成後套用 */
+});
+
+/* ---- ⭐️ 監控 sidebar 的變化（包含關閉後重建） ---- */
+function observeSidebarChanges() {
+  const sidebarRoot = document.querySelector('body');
+
+  if(!sidebarRoot) return;
+
+  const observer = new MutationObserver(() => {
+    const nav = document.querySelector('nav');
+    if(nav && !nav.__hasObserver) {
+      nav.__hasObserver = true;
+
+      /* 每次有 DOM 變更都重新標記 active chat */
+      const innerObserver = new MutationObserver(() => {
+        setTimeout(() => {
+          throttledMarkActiveChat();
+          setupScrollShadow();
+        }, 300);
+      });
+
+      innerObserver.observe(nav, {
+        childList: true,
+        subtree: true,
+      });
+
+      /* 第一次初始化 */
+      setTimeout(() => {
+        throttledMarkActiveChat();
+        setupScrollShadow();
+      }, 300);
+    }
+  });
+
+  observer.observe(sidebarRoot, {
+    childList: true,
+    subtree: true,
+  });
+}
+
+/***************************************/
+function setupScrollShadow() {
+  if(document.querySelector('main .overflow-y-auto.__ben-cust')) {
+    return;
+  }
+  const container = document.querySelector('main .overflow-y-auto');
+  const sticky = document.querySelector('main .composer-parent .sticky');
+
+  if(!container || !sticky) {
+    setTimeout(setupScrollShadow, 1000);
+    return;
+  }
+
+  container.classList.add('__ben-cust');
+  sticky.classList.remove('@[84rem]/thread:!shadow-none');  /* patch 寬螢幕沒有 shadow 效果*/
+
+
+
+  let clearScrollShadowTimer;
+  const toggleShadow = () => {
+    clearScrollShadowTimer && clearTimeout(clearScrollShadowTimer);
+    if(clearScrollShadowTimer && container.scrollTop > 0) {
+      sticky.classList.add('scroll-shadow');
+    }
+
+    clearScrollShadowTimer = setTimeout(() => {
+      sticky.classList.remove('scroll-shadow');
+    }, 500);
+  };
+
+  const t_toggleShadow = throttle(toggleShadow, 300);
+
+  container.addEventListener('scroll', t_toggleShadow);
+}
+
+/***************************************/
+/***************************************/
+/***************************************/
+
+observeSidebarChanges();
+throttledMarkActiveChat();
+setupScrollShadow();
+
+window.addEventListener('load', () => {
+  /* ✅ 初始化一次 */
+  setTimeout(() => {
+    throttledMarkActiveChat();
+  }, 500); /* 等待 DOM 變化完成後套用 */
+
+  observeSidebarChanges();
+
+})
