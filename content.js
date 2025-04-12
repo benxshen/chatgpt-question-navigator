@@ -1,3 +1,52 @@
+const main_sticky_selector = 'main div[role="presentation"] > .sticky';
+const chat_topic_selector = 'nav li a[data-history-item-link="true"]';
+
+function getChatTopic() {
+  const currChatTopic = [...document.querySelectorAll(chat_topic_selector)]
+                      .find(el => window.location.href.endsWith(el.getAttribute('href')));
+  if (currChatTopic) {
+    const text = currChatTopic.innerText.trim();
+    // 取前50個字元作為主題，如果超過則添加省略號
+    return text.length > 50 ? text.slice(0, 50) + '...' : text;
+  }
+  return '';
+}
+
+function createTopicBar() {
+  
+  // 創建主題容器
+  const chatTopicElm = document.createElement('div');
+  chatTopicElm.className = 'chat-topic';
+  
+  // // 添加圖示
+  // const icon = document.createElement('span');
+  // icon.className = 'chat-topic-icon';
+  // icon.innerText = '📝';
+  // topicContainer.appendChild(icon);
+  
+  // 添加主題文字
+  const topicText = document.createElement('span');
+  topicText.innerText = getChatTopic();
+  chatTopicElm.appendChild(topicText);
+  
+  // 插入到頁面中
+  const target = document.querySelector(`${main_sticky_selector} > .items-center`);
+  if (target) {
+    target.after(chatTopicElm);
+  }
+  
+  return chatTopicElm;
+}
+
+function updateTopicBar() {
+  const topicText = document.querySelector(`${main_sticky_selector} .chat-topic span:last-child`);
+  if (topicText) {
+    topicText.innerText = getChatTopic();
+  } else {
+    createTopicBar();
+  }
+}
+
 function getAllQuestions() {
   return Array.from(document.querySelectorAll('div[data-message-author-role="user"]')).map((el, idx) => ({
     element: el,
@@ -80,15 +129,21 @@ function initializeOrUpdateNavigator() {
 // 初始化
 setTimeout(initializeOrUpdateNavigator, 1000);
 
-// 使用 MutationObserver 監聽 URL 變化和新問項添加
-const observer = new MutationObserver((mutations) => {
-  // 檢查 URL 變化
+// 建立兩個獨立的 Observer
+const urlObserver = new MutationObserver(() => {
   if (currentUrl !== window.location.href) {
     currentUrl = window.location.href;
     initializeOrUpdateNavigator();
-    return;
-  }
+    // 在 URL 變化時重新創建主題欄
+    const existingTopicBar = document.querySelector(`${main_sticky_selector} > .chat-topic`);
+    if (existingTopicBar) {
+      existingTopicBar.remove();
+    }
+    createTopicBar();
+  } 
+});
 
+const contentObserver = new MutationObserver((mutations) => {
   // 檢查新的使用者訊息
   const hasNewUserMessage = mutations.some(mutation => 
     Array.from(mutation.addedNodes).some(node => 
@@ -98,21 +153,36 @@ const observer = new MutationObserver((mutations) => {
     )
   );
 
-  if (hasNewUserMessage && currentNavigator) {
-    const questions = getAllQuestions();
-    const currentItems = currentNavigator.querySelectorAll('.question-item').length - 1; // 扣除標題
+  if (hasNewUserMessage) {
+    // 更新導航器
+    if (currentNavigator) {
+      const questions = getAllQuestions();
+      const currentItems = currentNavigator.querySelectorAll('.question-item').length - 1;
 
-    if (questions.length > currentItems) {
-      for (let i = currentItems; i < questions.length; i++) {
-        addQuestionItem(questions[i], currentNavigator);
+      if (questions.length > currentItems) {
+        for (let i = currentItems; i < questions.length; i++) {
+          addQuestionItem(questions[i], currentNavigator);
+        }
       }
     }
+    
+    // 更新主題
+    updateTopicBar();
   }
 });
 
-observer.observe(document.body, {
+// 設置觀察者
+urlObserver.observe(document.body, {
+  childList: true,
+  subtree: true
+});
+
+contentObserver.observe(document.body, {
   childList: true,
   subtree: true,
   attributes: false,
   characterData: false
 });
+
+// 初始化主題欄
+setTimeout(() => createTopicBar(), 1000);
