@@ -58,22 +58,24 @@ function getAllQuestions() {
 function addQuestionItem(question, container) {
   const item = document.createElement('div');
   item.className = 'question-item';
+  item.dataset.questionId = question.id;
   
   // 主要文字
   const text = question.text.length > 80 ? question.text.slice(0, 80) + '...' : question.text;
   item.innerText = `${container.children.length}. ${text}`;
-  
-  // 浮動提示視窗
-  const tooltip = document.createElement('div');
-  tooltip.className = 'question-tooltip';
-  tooltip.innerText = question.text;
-  item.appendChild(tooltip);
   
   // 點擊事件
   item.addEventListener('click', () => {
     const target = document.getElementById(question.id);
     if (target) {
       target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      // 移除其他項目的active狀態
+      const items = container.querySelectorAll('.question-item');
+      items.forEach(i => i.classList.remove('active'));
+      
+      // 設置當前項目為active
+      item.classList.add('active');
     }
   });
   
@@ -82,6 +84,12 @@ function addQuestionItem(question, container) {
 }
 
 function createNavigator(questions) {
+  // 創建固定tab
+  const tab = document.createElement('div');
+  tab.className = 'navigator-tab';
+  document.body.appendChild(tab);
+
+  // 創建導航器
   const navigator = document.createElement('div');
   navigator.className = 'question-navigator';
 
@@ -93,17 +101,49 @@ function createNavigator(questions) {
 
   questions.forEach(q => addQuestionItem(q, navigator));
 
-  // 監聽滑鼠事件以更新問題列表
-  navigator.addEventListener('mouseenter', () => {
-    const questions = getAllQuestions();
-    const currentItems = navigator.querySelectorAll('.question-item').length - 1; // 扣除標題
+  // 點擊 tab 顯示/隱藏導航器
+  tab.addEventListener('click', () => {
+    navigator.classList.toggle('show');
+  });
 
-    if (questions.length > currentItems) {
-      for (let i = currentItems; i < questions.length; i++) {
-        addQuestionItem(questions[i], navigator);
-      }
+  // 點擊其他地方隱藏導航器
+  document.addEventListener('click', (e) => {
+    if (!navigator.contains(e.target) && !tab.contains(e.target)) {
+      navigator.classList.remove('show');
     }
   });
+
+  // 監聽頁面滾動以更新當前項目
+  document.querySelector('main .\\@container.overflow-y-auto').addEventListener('scroll', () => {
+    requestAnimationFrame(() => {
+      const items = navigator.querySelectorAll('.question-item:not(:first-child)');
+      items.forEach(item => item.classList.remove('active'));
+
+      // 找出當前視窗中最靠近頂部的問題
+      let closestItem = null;
+      let minDistance = Infinity;
+      
+      items.forEach(item => {
+        const questionId = item.dataset.questionId;
+        if (!questionId) return;
+        
+        const question = document.getElementById(questionId);
+        if (!question) return;
+        
+        const rect = question.getBoundingClientRect();
+        const distance = Math.abs(rect.top);
+        
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestItem = item;
+        }
+      });
+
+      if (closestItem) {
+        closestItem.classList.add('active');
+      }
+    });
+  }, { passive: true });
 
   document.body.appendChild(navigator);
   return navigator;
