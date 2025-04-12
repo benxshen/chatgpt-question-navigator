@@ -119,45 +119,88 @@ function createNavigator(questions) {
   });
 
   // 監聽頁面滾動以更新當前項目
-  document.querySelector('main .\\@container.overflow-y-auto').addEventListener('scroll', () => {
-    requestAnimationFrame(() => {
-      const items = navigator.querySelectorAll('.question-item:not(:first-child)');
-      items.forEach(item => item.classList.remove('active'));
-
-      // 找出當前視窗中最靠近頂部的問題
-      let closestItem = null;
-      let minDistance = Infinity;
-      
-      items.forEach(item => {
-        const questionId = item.dataset.questionId;
-        if (!questionId) return;
+  const scrollContainer = document.querySelector('main .\\@container.overflow-y-auto');
+  let scrollTimeout;
+  
+  scrollContainer.addEventListener('scroll', () => {
+    // 使用 throttle 來限制執行頻率
+    if (!scrollTimeout) {
+      scrollTimeout = setTimeout(() => {
+        scrollTimeout = null;
         
-        const question = document.getElementById(questionId);
-        if (!question) return;
-        
-        const rect = question.getBoundingClientRect();
-        const distance = Math.abs(rect.top);
-        
-        if (distance < minDistance) {
-          minDistance = distance;
-          closestItem = item;
-        }
-      });
+        requestAnimationFrame(() => {
+          const items = navigator.querySelectorAll('.question-item:not(:first-child)');
+          items.forEach(item => item.classList.remove('active'));
 
-      if (closestItem) {
-        closestItem.classList.add('active');
+          let closestItem = null;
+          let minDistance = Infinity;
+          let closestNegativeItem = null;
+          let minNegativeDistance = Infinity;
+          let hasVisibleItem = false;
+          
+          const containerRect = scrollContainer.getBoundingClientRect();
+          const containerHeight = containerRect.height;
 
-        const minimapRows = document.querySelectorAll('.minimap-row');
-        minimapRows.forEach(item => {
-          if (item.dataset.questionId === closestItem.dataset.questionId) {
-            item.classList.add('active');
-          } else {
-            item.classList.remove('active')
+          items.forEach(item => {
+            const questionId = item.dataset.questionId;
+            if (!questionId) return;
+            
+            const question = document.getElementById(questionId);
+            if (!question) return;
+
+            /*
+              元素可見性判斷更準確:
+              完整檢查元素的可見狀態，包含：
+              
+                - 元素頂部在可視區域內
+                - 元素底部在可視區域內
+                - 元素完全覆蓋可視區域
+              
+              元素選擇邏輯更完善
+                - 優先選擇可視區域內最靠近頂部的元素
+                - 當沒有可見元素時，自動選擇 top 為負值且絕對值最小的元素
+            */
+
+            const rect = question.getBoundingClientRect();
+            const isVisible = (rect.top >= 0 && rect.top <= containerHeight) || 
+                            (rect.bottom >= 0 && rect.bottom <= containerHeight) ||
+                            (rect.top <= 0 && rect.bottom >= containerHeight);
+
+            if (isVisible) {
+              hasVisibleItem = true;
+              const distance = Math.abs(rect.top);
+              if (distance < minDistance) {
+                minDistance = distance;
+                closestItem = item;
+              }
+            } else if (rect.top < 0) {
+              // 記錄最接近可視區域頂部的負值元素
+              const distance = Math.abs(rect.top);
+              if (distance < minNegativeDistance) {
+                minNegativeDistance = distance;
+                closestNegativeItem = item;
+              }
+            }
+          });
+
+          // 決定要激活的元素
+          const itemToActivate = hasVisibleItem ? closestItem : closestNegativeItem;
+
+          if (itemToActivate) {
+            itemToActivate.classList.add('active');
+            // 更新 minimap
+            const minimapRows = document.querySelectorAll('.minimap-row');
+            minimapRows.forEach(item => {
+              if (item.dataset.questionId === itemToActivate.dataset.questionId) {
+                item.classList.add('active');
+              } else {
+                item.classList.remove('active');
+              }
+            });
           }
         });
-
-      }
-    });
+      }, 100); // 100ms 的 throttle 時間
+    }
   }, { passive: true });
 
   document.body.appendChild(navigator);
