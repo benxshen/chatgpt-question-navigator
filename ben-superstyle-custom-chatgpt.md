@@ -123,5 +123,4 @@ button.cursor-pointer {
 }
 
 ```
-![image](https://github.com/user-attachments/assets/25fac8b2-674e-4ed0-b80c-c023dddee46e)
 
