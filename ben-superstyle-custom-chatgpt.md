@@ -1,4 +1,4 @@
-![](imgs/custom-chatgpt_screenshot_1.png){width=800}
+<img src="imgs/custom-chatgpt_screenshot_1.png" width=800>
 
 ```css
 /* sidebar 背景 */

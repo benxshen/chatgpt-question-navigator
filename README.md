@@ -1,4 +1,4 @@
-![alt text](chatgpt_feature_overview.png){width=800}
+<img src="chatgpt_feature_overview.png" width=800>
 
 # ChatGPT 聊天的優化擴充
 
