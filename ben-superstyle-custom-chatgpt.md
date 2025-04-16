@@ -1,3 +1,5 @@
+![](imgs/custom-chatgpt_screenshot_1.png){width=800}
+
 ```css
 /* sidebar 背景 */
 .bg-token-sidebar-surface-primary {
