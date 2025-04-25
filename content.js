@@ -109,6 +109,7 @@ function createNavigator(questions) {
   // 點擊 minimap 顯示/隱藏導航器
   minimap.addEventListener('click', () => {
     navigator.classList.toggle('show');
+    navigator.querySelector('.question-item.active').scrollIntoView();
   });
 
   // 點擊其他地方隱藏導航器
@@ -119,7 +120,7 @@ function createNavigator(questions) {
   });
 
   // 監聽頁面滾動以更新當前項目
-  const scrollContainer = document.querySelector('main .\\@container.overflow-y-auto');
+  const scrollContainer = document.querySelector('main .overflow-y-auto');
   let scrollTimeout;
   
   scrollContainer.addEventListener('scroll', () => {
@@ -130,7 +131,6 @@ function createNavigator(questions) {
         
         requestAnimationFrame(() => {
           const items = navigator.querySelectorAll('.question-item:not(:first-child)');
-          items.forEach(item => item.classList.remove('active'));
 
           let closestItem = null;
           let minDistance = Infinity;
@@ -186,8 +186,10 @@ function createNavigator(questions) {
           // 決定要激活的元素
           const itemToActivate = hasVisibleItem ? closestItem : closestNegativeItem;
 
-          if (itemToActivate) {
+          if (itemToActivate && !scrollTimeout) {
+            items.forEach(item => item.classList.remove('active'));
             itemToActivate.classList.add('active');
+            navigator.querySelector('.question-item.active').scrollIntoView();
             // 更新 minimap
             const minimapRows = document.querySelectorAll('.minimap-row');
             minimapRows.forEach(item => {
@@ -199,7 +201,7 @@ function createNavigator(questions) {
             });
           }
         });
-      }, 100); // 100ms 的 throttle 時間
+      }, 100); // throttle 時間
     }
   }, { passive: true });
 
