@@ -18,12 +18,6 @@ function createTopicBar() {
   const chatTopicElm = document.createElement('div');
   chatTopicElm.className = 'chat-topic';
   
-  // // 添加圖示
-  // const icon = document.createElement('span');
-  // icon.className = 'chat-topic-icon';
-  // icon.innerText = '📝';
-  // topicContainer.appendChild(icon);
-  
   // 添加主題文字
   const topicText = document.createElement('span');
   topicText.innerText = getChatTopic();
@@ -189,7 +183,7 @@ function createNavigator(questions) {
           if (itemToActivate && !scrollTimeout) {
             items.forEach(item => item.classList.remove('active'));
             itemToActivate.classList.add('active');
-            navigator.querySelector('.question-item.active').scrollIntoView();
+            navigator.querySelector('.question-item.active').scrollIntoViewIfNeeded();
             // 更新 minimap
             const minimapRows = document.querySelectorAll('.minimap-row');
             minimapRows.forEach(item => {
