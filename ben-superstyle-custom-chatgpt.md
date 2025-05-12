@@ -12,7 +12,7 @@
 /* sidebar 背景 */
 .bg-token-sidebar-surface-primary,
 .bg-token-bg-elevated-secondary {
-  // background-color: #fffaf0;
+  /* // background-color: #fffaf0; */
   background-color: #252524;
 }
 
@@ -51,7 +51,7 @@
 
 /* 程式碼背景 */
 pre .bg-token-sidebar-surface-primary {
-  // background-color: #c7e3e540;
+  /* // background-color: #c7e3e540; */
   background-color: #ffffffa6;
 }
 
@@ -117,18 +117,18 @@ form[data-type="unified-composer"] > div {
 
 
 body {
-  //background-image: url('https://images.unsplash.com/photo-1506765515384-028b60a970df?auto=format&fit=crop&w=1400&q=80');
+  /* //background-image: url('https://images.unsplash.com/photo-1506765515384-028b60a970df?auto=format&fit=crop&w=1400&q=80'); */
   background-image: url('https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&w=1400&q=80');
   background-size: cover;
   background-position: 1000px 400px;
   background-attachment: fixed;
-  //background-blend-mode: multiply;
-  //background-color: rgb(239 239 239 / 24%) !important;
+  /* //background-blend-mode: multiply; */
+  /* //background-color: rgb(239 239 239 / 24%) !important; */
 }
 
 main {
-  // backdrop-filter: blur(2px) brightness(0.95);
-  //background-color: rgb(107 96 96 / 13%);
+  /* // backdrop-filter: blur(2px) brightness(0.95); */
+  /* //background-color: rgb(107 96 96 / 13%); */
   background-color: rgb(225 251 251 / 77%);
 }
 
@@ -153,4 +153,3 @@ button.cursor-pointer {
 }
 
 ```
-
