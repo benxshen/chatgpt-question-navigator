@@ -1,142 +1,163 @@
-/* sidebar 背景 */
+/* Custom ChatGPT Theme Styles
+ * A custom theme for ChatGPT interface with a clean, modern design
+ */
+
+:root {
+  /* Color Variables */
+  --sidebar-bg: #252524;
+  --text-primary: #b8b6b6;
+  --text-hover: #000000;
+  --accent-color: #b8fbff;
+  --code-bg: #e6f8e7;
+  --hover-bg: #b6b9b930;
+  --border-highlight: #b8860b4a;
+  --main-bg-opacity: rgb(225 251 251 / 77%);
+  --section-bg-opacity: #fff4b775;
+  
+  /* Typography */
+  --code-font: 'CaskaydiaCove NF', 'Ubuntu Mono derivative Powerline';
+  --content-font: '文泉驛微米黑';
+  --code-font-size: 13px;
+}
+
+/* Layout & Background
+-------------------------------------------------- */
+body {
+  background-image: url('https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&w=1400&q=80');
+  background-size: cover;
+  background-position: 1000px 400px;
+  background-attachment: fixed;
+}
+
+main {
+  background-color: var(--main-bg-opacity);
+}
+
+section main {
+  background: var(--section-bg-opacity);
+}
+
+/* Sidebar Styles
+-------------------------------------------------- */
 .bg-token-sidebar-surface-primary,
 .bg-token-bg-elevated-secondary {
-  /* background-color: #fffaf0; */
-  background-color: #252524;
+  background-color: var(--sidebar-bg);
 }
 
 .bg-token-sidebar-surface-primary .text-token-text-primary,
 .bg-token-sidebar-surface-primary button {
-    color: #b8b6b6;
+  color: var(--text-primary);
 }
 
 .bg-token-sidebar-surface-primary a:hover,
 .bg-token-sidebar-surface-primary a:hover .text-token-text-primary,
 .bg-token-sidebar-surface-primary button:hover {
-    color: black;
+  color: var(--text-hover);
 }
 
-/* chatgpt built-in active chat selector */
+/* Active Chat Indicators
+-------------------------------------------------- */
 .bg-\[var\(--sidebar-surface-tertiary\)\] {
   background: none;
 }
 
-.bg-\[var\(--sidebar-surface-tertiary\)\] a {
-  color: #b8fbff !important;
-}
-
-.bg-\[var\(--sidebar-surface-tertiary\)\] a:before {
-    content: '>>'
-}
-
+.bg-\[var\(--sidebar-surface-tertiary\)\] a,
 .my-active-chat {
-    color: #b8fbff;
+  color: var(--accent-color) !important;
 }
 
+.bg-\[var\(--sidebar-surface-tertiary\)\] a:before,
 .my-active-chat:before {
-    content: '>>'
+  content: '>>';
 }
 
-
-/* 程式碼背景 */
+/* Code Block Styling
+-------------------------------------------------- */
 pre .bg-token-sidebar-surface-primary {
-  /* background-color: #c7e3e540; */
   background-color: #ffffffa6;
 }
 
 code, pre {
-  font-family: CaskaydiaCove NF, Ubuntu Mono derivative Powerline !important;
-  font-size: 13px !important;
-}
-
-.bg-token-message-surface {
-	background-color: #000000;
-  font-family: "文泉驛微米黑";
-  color: aliceblue;
+  font-family: var(--code-font) !important;
+  font-size: var(--code-font-size) !important;
 }
 
 .prose :where(code):not(:where([class~=not-prose] *)) {
-  background-color: #e6f8e7;
+  background-color: var(--code-bg);
 }
 
+/* Message Container
+-------------------------------------------------- */
+.bg-token-message-surface {
+  background-color: #000000;
+  font-family: var(--content-font);
+  color: aliceblue;
+}
+
+/* Link Styling
+-------------------------------------------------- */
 a[rel="noopener"] {
-    background-color: aliceblue;
-    /* border: 1px solid lightblue; */
+  background-color: aliceblue;
+}
+
+/* Interactive Elements
+-------------------------------------------------- */
+.bg-\[var\(--item-background-color\)\] {
+  background-color: transparent;
 }
 
 .bg-\[var\(--item-background-color\)\]:hover {
-    background-color: #b6b9b930;
+  background-color: var(--hover-bg);
 }
 
-.bg-\[var\(--item-background-color\)\] {
-    background-color: transparent;
-    /* border-radius: 0; */
-}
-
-
+/* Composer Area
+-------------------------------------------------- */
 div#composer-background {
-    border: 1px solid #b8860b4a;
+  border: 1px solid var(--border-highlight);
+  transition: border-color 0.3s ease;
 }
 
-div#composer-background:focus-within
-{
-    border-width: 3px;
-    border-color: black;
+div#composer-background:focus-within,
+div#composer-background:hover {
+  border-width: 3px;
+  border-color: black;
 }
 
-div#composer-background:hover
-{
-    border-color: black;
-}
-
-form[data-type="unified-composer"] > div:focus-within {
-    border-width: 3px;
-    border-color: black !important;
-  opacity: 1 !important;
+/* Composer Form
+-------------------------------------------------- */
+form[data-type="unified-composer"] > div {
+  opacity: 0.8;
+  transition: all 0.3s ease;
 }
 
 form[data-type="unified-composer"] > div:hover {
-    border-color: gray;
+  border-color: gray;
   opacity: 0.9;
 }
 
-form[data-type="unified-composer"] > div {
-	opacity: 0.8;
+form[data-type="unified-composer"] > div:focus-within {
+  border-width: 3px;
+  border-color: black !important;
+  opacity: 1 !important;
 }
 
-
-body {
-  /* background-image: url('https://images.unsplash.com/photo-1506765515384-028b60a970df?auto=format&fit=crop&w=1400&q=80'); */
-  background-image: url('https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?auto=format&fit=crop&w=1400&q=80');
-  background-size: cover;
-  background-position: 1000px 400px;
-  background-attachment: fixed;
-  /* background-blend-mode: multiply; */
-  /* background-color: rgb(239 239 239 / 24%) !important; */
-}
-
-main {
-  /* backdrop-filter: blur(2px) brightness(0.95); */
-  /* background-color: rgb(107 96 96 / 13%); */
-  background-color: rgb(225 251 251 / 77%);
-}
-
-section main {
-    background: #fff4b775;
-}
-
+/* Sticky Composer
+-------------------------------------------------- */
 main .composer-parent .sticky {
-    opacity: 0.8;
+  opacity: 0.8;
   transition: box-shadow 0.3s ease;
   position: relative;
-    background: white;
+  background: white;
 }
 
-
+/* Utility Classes
+-------------------------------------------------- */
 .scroll-shadow {
-	box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12), 0 2px 4px -1px rgba(0, 0, 0, .2) !important;
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .14),
+              0 1px 10px 0 rgba(0, 0, 0, .12),
+              0 2px 4px -1px rgba(0, 0, 0, .2) !important;
 }
 
 button.cursor-pointer {
-    opacity: 0.6;
+  opacity: 0.6;
 }
