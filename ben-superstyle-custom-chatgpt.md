@@ -1,5 +1,13 @@
 <img src="imgs/custom-chatgpt_screenshot_1.png" width=800>
 
+可以透過 
+
+```css
+@import url(https://benxshen.github.io/chatgpt-question-navigator/ben-superstyle-custom-chatgpt.css);
+```
+
+或是
+
 ```css
 /* sidebar 背景 */
 .bg-token-sidebar-surface-primary,
