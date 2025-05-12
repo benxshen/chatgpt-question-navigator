@@ -2,7 +2,8 @@
 
 ```css
 /* sidebar 背景 */
-.bg-token-sidebar-surface-primary {
+.bg-token-sidebar-surface-primary,
+.bg-token-bg-elevated-secondary {
   // background-color: #fffaf0;
   background-color: #252524;
 }
@@ -10,6 +11,25 @@
 .bg-token-sidebar-surface-primary .text-token-text-primary,
 .bg-token-sidebar-surface-primary button {
     color: #b8b6b6;
+}
+
+.bg-token-sidebar-surface-primary a:hover,
+.bg-token-sidebar-surface-primary a:hover .text-token-text-primary,
+.bg-token-sidebar-surface-primary button:hover {
+    color: black;
+}
+
+/* chatgpt built-in active chat selector */
+.bg-\[var\(--sidebar-surface-tertiary\)\] {
+  background: none;
+}
+
+.bg-\[var\(--sidebar-surface-tertiary\)\] a {
+  color: #b8fbff !important;
+}
+
+.bg-\[var\(--sidebar-surface-tertiary\)\] a:before {
+    content: '>>'
 }
 
 .my-active-chat {
