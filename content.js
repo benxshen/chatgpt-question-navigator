@@ -286,24 +286,6 @@ setTimeout(() => createTopicBar(), 1000);
 
 //////////////////////////////////////////////////////////////////////////////
 
-/* 加上自訂樣式 class 到正確的 active chat item */
-function markActiveChat() {
-
-  /* 移除舊的 active 樣式 */
-  document.querySelectorAll('nav a.my-active-chat')
-    .forEach(el => el.classList.remove('my-active-chat'));
-
-  /* 重新比對目前 URL */
-  const activeChat = [...document.querySelectorAll('nav a')].find(el => {
-    const href = el.getAttribute('href');
-    return href && href !== '/' && window.location.href === `https://chatgpt.com${href}`;
-  });
-
-  if(activeChat) {
-    activeChat.classList.add('my-active-chat');
-  }
-}
-
 function throttle(func, limit) {
   let lastCall = 0;
   let timeout;
@@ -344,13 +326,6 @@ function hookUrlChange(callback) {
   window.addEventListener('popstate', callback);
 }
 
-const throttledMarkActiveChat = throttle(markActiveChat, 500);
-
-/* 🧠 每次網址變動就重新套用 */
-hookUrlChange(() => {
-  setTimeout(throttledMarkActiveChat, 200); /* 等待 DOM 變化完成後套用 */
-});
-
 /* ---- ⭐️ 監控 sidebar 的變化（包含關閉後重建） ---- */
 function observeSidebarChanges() {
   const sidebarRoot = document.querySelector('body');
@@ -365,7 +340,6 @@ function observeSidebarChanges() {
       /* 每次有 DOM 變更都重新標記 active chat */
       const innerObserver = new MutationObserver(() => {
         setTimeout(() => {
-          throttledMarkActiveChat();
           setupScrollShadow();
         }, 300);
       });
@@ -377,7 +351,6 @@ function observeSidebarChanges() {
 
       /* 第一次初始化 */
       setTimeout(() => {
-        throttledMarkActiveChat();
         setupScrollShadow();
       }, 300);
     }
@@ -429,13 +402,11 @@ function setupScrollShadow() {
 /***************************************/
 
 observeSidebarChanges();
-throttledMarkActiveChat();
 setupScrollShadow();
 
 window.addEventListener('load', () => {
   /* ✅ 初始化一次 */
   setTimeout(() => {
-    throttledMarkActiveChat();
   }, 500); /* 等待 DOM 變化完成後套用 */
 
   observeSidebarChanges();
