@@ -61,13 +61,11 @@ section main {
   background: none;
 }
 
-.bg-\[var\(--sidebar-surface-tertiary\)\] a,
-.my-active-chat {
+.bg-\[var\(--sidebar-surface-tertiary\)\] a {
   color: var(--accent-color) !important;
 }
 
-.bg-\[var\(--sidebar-surface-tertiary\)\] a:before,
-.my-active-chat:before {
+.bg-\[var\(--sidebar-surface-tertiary\)\] a:before {
   content: '>>';
 }
 
