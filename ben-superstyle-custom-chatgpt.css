@@ -128,6 +128,7 @@ div#composer-background:hover {
 form[data-type="unified-composer"] > div {
   opacity: 0.8;
   transition: all 0.3s ease;
+  background: lightgoldenrodyellow;
 }
 
 form[data-type="unified-composer"] > div:hover {
@@ -139,6 +140,10 @@ form[data-type="unified-composer"] > div:focus-within {
   border-width: 3px;
   border-color: black !important;
   opacity: 1 !important;
+}
+
+#prompt-textarea {
+  color: purple;
 }
 
 /* Sticky Composer
