@@ -44,15 +44,13 @@ section main {
   background-color: var(--sidebar-bg);
 }
 
-.bg-token-sidebar-surface-primary .text-token-text-primary,
-.bg-token-sidebar-surface-primary button {
+.__menu-item {
   color: var(--text-primary);
 }
 
-.bg-token-sidebar-surface-primary a:hover,
-.bg-token-sidebar-surface-primary a:hover .text-token-text-primary,
-.bg-token-sidebar-surface-primary button:hover {
+.__menu-item:hover {
   color: var(--text-hover);
+  background: var(--text-primary);
 }
 
 /* Active Chat Indicators
@@ -61,11 +59,15 @@ section main {
   background: none;
 }
 
-.bg-\[var\(--sidebar-surface-tertiary\)\] a {
+.__menu-item {
+	color: var(--text-primary);
+}
+
+a.__menu-item[data-active]{
   color: var(--accent-color) !important;
 }
 
-.bg-\[var\(--sidebar-surface-tertiary\)\] a:before {
+a.__menu-item[data-active]:before {
   content: '>>';
 }
 
