@@ -67,9 +67,6 @@ nav a {
   background: none;
 }
 
-.__menu-item {
-	color: var(--text-primary);
-}
 
 a.__menu-item[data-active]{
   color: var(--accent-color) !important;
