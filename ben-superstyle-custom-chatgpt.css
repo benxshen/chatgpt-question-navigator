@@ -48,17 +48,25 @@ nav a {
     color: white;
 }
 
-.__menu-item {
+nav .__menu-item {
   color: #e2e2e2;
 }
 
-.__menu-item-trailing-btn {
+nav .__menu-item-trailing-btn {
   color: #e2e2e2;
 }
 
-.__menu-item:hover {
+nav .__menu-item:hover {
   /* color: var(--text-hover); */
   background: #606060;
+}
+
+nav a.__menu-item[data-active]{
+  color: var(--accent-color) !important;
+}
+
+nav a.__menu-item[data-active]:before {
+  content: '>>';
 }
 
 /* Active Chat Indicators
@@ -67,14 +75,6 @@ nav a {
   background: none;
 }
 
-
-a.__menu-item[data-active]{
-  color: var(--accent-color) !important;
-}
-
-a.__menu-item[data-active]:before {
-  content: '>>';
-}
 
 /* Code Block Styling
 -------------------------------------------------- */
