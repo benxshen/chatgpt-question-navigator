@@ -5,7 +5,7 @@
 :root {
   /* Color Variables */
   --sidebar-bg: #252524;
-  --text-primary: #b8b6b6;
+  /* --text-primary: #b8b6b6; */
   --text-hover: #000000;
   --accent-color: #b8fbff;
   --code-bg: #e6f8e7;
@@ -44,13 +44,21 @@ section main {
   background-color: var(--sidebar-bg);
 }
 
+nav a {
+    color: white;
+}
+
 .__menu-item {
-  color: var(--text-primary);
+  color: #e2e2e2;
+}
+
+.__menu-item-trailing-btn {
+  color: #e2e2e2;
 }
 
 .__menu-item:hover {
-  color: var(--text-hover);
-  background: var(--text-primary);
+  /* color: var(--text-hover); */
+  background: #606060;
 }
 
 /* Active Chat Indicators
