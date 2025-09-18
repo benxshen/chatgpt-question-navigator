@@ -172,3 +172,13 @@ main .composer-parent .sticky {
 button.cursor-pointer {
   opacity: 0.6;
 }
+
+pre .sticky .bg-token-bg-elevated-secondary {
+  background: transparent;
+}
+
+pre .sticky button {
+    background: #c8dae09c;
+    border-radius: 20px;
+    padding: 5px;
+}
