@@ -5,7 +5,7 @@
 :root {
   /* Color Variables */
   --sidebar-bg: #252524;
-  --text-primary: #b8b6b6;
+  /* --text-primary: #b8b6b6; */
   --text-hover: #000000;
   --accent-color: #b8fbff;
   --code-bg: #e6f8e7;
@@ -44,13 +44,29 @@ section main {
   background-color: var(--sidebar-bg);
 }
 
-.__menu-item {
-  color: var(--text-primary);
+nav a {
+    color: white;
 }
 
-.__menu-item:hover {
-  color: var(--text-hover);
-  background: var(--text-primary);
+nav .__menu-item {
+  color: #e2e2e2;
+}
+
+nav .__menu-item-trailing-btn {
+  color: #e2e2e2;
+}
+
+nav .__menu-item:hover {
+  /* color: var(--text-hover); */
+  background: #606060;
+}
+
+nav a.__menu-item[data-active]{
+  color: var(--accent-color) !important;
+}
+
+nav a.__menu-item[data-active]:before {
+  content: '>>';
 }
 
 /* Active Chat Indicators
@@ -59,17 +75,6 @@ section main {
   background: none;
 }
 
-.__menu-item {
-	color: var(--text-primary);
-}
-
-a.__menu-item[data-active]{
-  color: var(--accent-color) !important;
-}
-
-a.__menu-item[data-active]:before {
-  content: '>>';
-}
 
 /* Code Block Styling
 -------------------------------------------------- */
