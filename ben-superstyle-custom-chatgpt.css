@@ -128,7 +128,7 @@ div#composer-background:hover {
 form[data-type="unified-composer"] > div {
   opacity: 0.8;
   transition: all 0.3s ease;
-  background: lightgoldenrodyellow;
+  /* background: lightgoldenrodyellow;*/
 }
 
 form[data-type="unified-composer"] > div:hover {
@@ -138,8 +138,9 @@ form[data-type="unified-composer"] > div:hover {
 
 form[data-type="unified-composer"] > div:focus-within {
   border-width: 3px;
-  border-color: black !important;
+  /* border-color: #252524 !important; */
   opacity: 1 !important;
+  border-radius: 28px;
 }
 
 #prompt-textarea {
