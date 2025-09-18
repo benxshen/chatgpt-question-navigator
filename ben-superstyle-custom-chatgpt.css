@@ -99,6 +99,19 @@ code, pre {
   color: aliceblue;
 }
 
+.user-message-bubble-color:before {
+    content: "🤔";
+    position: absolute;
+    left: -28px;
+    top: -30px;
+    font-size: 40px;
+    transform: rotate(10deg);
+}
+
+.user-message-bubble-color {
+    background-color: lightblue;
+}
+
 /* Link Styling
 -------------------------------------------------- */
 a[rel="noopener"] {
