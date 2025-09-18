@@ -177,8 +177,9 @@ pre .sticky .bg-token-bg-elevated-secondary {
   background: transparent;
 }
 
-pre .sticky button {
+pre .sticky button { /* 程式碼區塊複製按鈕 */
     background: #c8dae09c;
     border-radius: 20px;
     padding: 5px;
+    margin-top: -70px; /* 將複製按鈕對齊區塊的表頭 */
 }
