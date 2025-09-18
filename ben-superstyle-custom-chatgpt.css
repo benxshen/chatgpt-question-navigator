@@ -112,6 +112,16 @@ code, pre {
     background-color: lightblue;
 }
 
+
+div[data-message-author-role="assistant"]:before {
+	content: "🚀";
+  position: absolute;
+  left: -60px;
+  top: -20px;
+  font-size: 40px;
+
+}
+
 /* Link Styling
 -------------------------------------------------- */
 a[rel="noopener"] {
