@@ -143,7 +143,7 @@ form[data-type="unified-composer"] > div:hover {
 
 form[data-type="unified-composer"] > div:focus-within {
   border-width: 3px;
-  /* border-color: #252524 !important; */
+  border-color: #b0c0bf !important;
   opacity: 1 !important;
   border-radius: 28px;
 }
