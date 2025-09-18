@@ -1,5 +1,5 @@
 const main_sticky_selector = 'main div[role="presentation"] > .sticky';
-const chat_topic_selector = 'nav li a[data-history-item-link="true"]';
+const chat_topic_selector = 'nav a.__menu-item';
 
 function getChatTopic() {
   const currChatTopic = [...document.querySelectorAll(chat_topic_selector)]
