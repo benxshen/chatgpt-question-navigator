@@ -109,16 +109,24 @@ code, pre {
 }
 
 .user-message-bubble-color {
-    background-color: lightblue;
+  /* background-color: lightblue; */
+  box-shadow: rgba(37, 99, 235, 0.7) 0px 20px 40px -24px;
+  transform: translateX(-4px);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.92), rgba(14, 165, 233, 0.92));
+  border-color: transparent;
+  color: white;
+  border-radius: 0px 15px 0px 15px;
 }
 
 
 div[data-message-author-role="assistant"]:before {
 	content: "🚀";
   position: absolute;
-  left: -60px;
-  top: -20px;
+  /*left: -60px;
+  top: -20px;*/
   font-size: 40px;
+  right: -40px;
+  bottom: -20px;
 
 }
 
