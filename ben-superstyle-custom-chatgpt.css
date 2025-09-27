@@ -100,12 +100,14 @@ code, pre {
 }
 
 .user-message-bubble-color:before {
-    content: "🤔";
-    position: absolute;
-    left: -28px;
-    top: -30px;
-    font-size: 40px;
-    transform: rotate(10deg);
+  content: "🤔";
+  position: absolute;
+  font-size: 40px;
+  transform: rotate(10deg);
+  right: -40px;
+  bottom: -20px;
+  /* left: -28px;
+  top: -30px; */
 }
 
 .user-message-bubble-color {
@@ -122,11 +124,10 @@ code, pre {
 div[data-message-author-role="assistant"]:before {
 	content: "🚀";
   position: absolute;
-  /*left: -60px;
-  top: -20px;*/
+  left: -60px;
+  top: -20px;
   font-size: 40px;
-  right: -40px;
-  bottom: -20px;
+  
 
 }
 
