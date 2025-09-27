@@ -1,6 +1,15 @@
 const main_sticky_selector = 'main div[role="presentation"] > .sticky';
 const chat_topic_selector = 'nav a.__menu-item';
 
+function scrollItemIntoView(item) {
+  if (!item) return;
+  if (typeof item.scrollIntoViewIfNeeded === 'function') {
+    item.scrollIntoViewIfNeeded();
+  } else {
+    item.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+}
+
 function getChatTopic() {
   const currChatTopic = [...document.querySelectorAll(chat_topic_selector)]
                       .find(el => window.location.href.endsWith(el.getAttribute('href')));
@@ -60,8 +69,24 @@ function addQuestionItem(question, container) {
   document.querySelector('.navigator-minimap').appendChild(minimapRow);
   
   // 主要文字
-  const text = question.text.length > 80 ? question.text.slice(0, 80) + '...' : question.text;
-  item.innerText = `${container.children.length}. ${text}`;
+  const text = question.text.length > 50 ? question.text.slice(0, 50) + '...' : question.text;
+  const index = container.querySelectorAll('.question-item').length + 1;
+
+  const indexBadge = document.createElement('span');
+  indexBadge.className = 'question-item__index';
+  indexBadge.innerText = index.toString().padStart(2, '0');
+
+  const textLabel = document.createElement('span');
+  textLabel.className = 'question-item__text';
+  textLabel.innerText = text;
+
+  const chevron = document.createElement('span');
+  chevron.className = 'question-item__chevron';
+  chevron.innerText = '›';
+
+  item.appendChild(indexBadge);
+  item.appendChild(textLabel);
+  item.appendChild(chevron);
   
   // 點擊事件
   item.addEventListener('click', () => {
@@ -94,8 +119,14 @@ function createNavigator(questions) {
 
   // 標題項目
   const header = document.createElement('div');
-  header.className = 'question-item';
-  header.innerText = '⚡ 選擇一個提問來跳轉 ⚡';
+  header.className = 'question-navigator__header';
+  header.innerHTML = `
+    <span class="question-navigator__badge">Jump</span>
+    <div class="question-navigator__heading">
+      <span class="question-navigator__title">Question Navigator</span>
+      <span class="question-navigator__subtitle">快速跳轉對話</span>
+    </div>
+  `;
   navigator.appendChild(header);
 
   questions.forEach(q => addQuestionItem(q, navigator));
@@ -103,7 +134,8 @@ function createNavigator(questions) {
   // 點擊 minimap 顯示/隱藏導航器
   minimap.addEventListener('click', () => {
     navigator.classList.toggle('show');
-    navigator.querySelector('.question-item.active').scrollIntoView();
+    const activeItem = navigator.querySelector('.question-item.active');
+    scrollItemIntoView(activeItem);
   });
 
   // 點擊其他地方隱藏導航器
@@ -124,7 +156,7 @@ function createNavigator(questions) {
         scrollTimeout = null;
         
         requestAnimationFrame(() => {
-          const items = navigator.querySelectorAll('.question-item:not(:first-child)');
+          const items = navigator.querySelectorAll('.question-item');
 
           let closestItem = null;
           let minDistance = Infinity;
@@ -183,7 +215,7 @@ function createNavigator(questions) {
           if (itemToActivate && !scrollTimeout) {
             items.forEach(item => item.classList.remove('active'));
             itemToActivate.classList.add('active');
-            navigator.querySelector('.question-item.active').scrollIntoViewIfNeeded();
+            scrollItemIntoView(itemToActivate);
             // 更新 minimap
             const minimapRows = document.querySelectorAll('.minimap-row');
             minimapRows.forEach(item => {
