@@ -44,6 +44,10 @@ section main {
   background-color: var(--sidebar-bg);
 }
 
+.bg-token-bg-elevated-secondary[role="tablist"] {
+    background: aquamarine;
+}
+
 nav a {
     color: white;
 }
